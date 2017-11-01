@@ -50,7 +50,9 @@ export default class OptionsList extends React.Component {
         const newHightlightedWord = this.getCurrentWord(newProps.items, hightlightedIndex);
 
         if (hightlightedWord !== newHightlightedWord) {
-            this.reset();
+            setTimeout(() => {
+                this.reset();
+            }, 100);
         }
     }
 
