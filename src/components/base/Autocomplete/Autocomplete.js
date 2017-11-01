@@ -1,11 +1,9 @@
 import React from 'react';
 import './Autocomplete.css';
 import colors from "../../../constants/colors";
-import {setEndOfContenteditable} from "../../../utils/cursor";
-import {playSound} from "../../../utils/sound";
-import {soundForKey} from "../../../constants/sounds";
-import {isAlphaNumeric, isSpecialKey} from "../../../utils/keys";
 import keys from "../../../constants/keys";
+// import AutocompleteInput from "./AutocompleteEditable";
+import AutocompleteInput from "./AutocompleteInput";
 
 export default class Autocomplete extends React.Component {
 
@@ -13,35 +11,26 @@ export default class Autocomplete extends React.Component {
         super(props);
 
         this.state = {
-            minimumCharactersToCalc:2,
+            minimumCharactersToCalc:1,
+            mustFit: true,
             solid: '',
             liquid: '',
-            words: ['fontSize', 'fontWeight', 'bigFreakingNumberIsHere','pixel', 'pixem', 'findAll', 'findOne']
+            words: ['addView', 'addViews','fontSize', 'fontWeight', 'bigFreakingNumberIsHere','pixel', 'pixem', 'findAll', 'findOne']
         }
 
-        this.onChange = this.onChange.bind(this);
-        this.onKeyDown = this.onKeyDown.bind(this);
         this.findRelevantWord = this.findRelevantWord.bind(this);
-        this.specialKey = this.specialKey.bind(this);
-        this.focus = this.focus.bind(this);
-    }
-
-    focus() {
-        this._input.focus();
+        this.onSpecialKey = this.onSpecialKey.bind(this);
+        this.recalc = this.recalc.bind(this);
     }
 
     componentWillReceiveProps(newProps) {
-    }
-
-    componentDidMount() {
-        this.focus();
     }
 
     findRelevantWord(solid) {
         const {words} = this.state;
 
         return words.reduce((output, word) => {
-            return word.indexOf(solid) === 0 ? word : output;
+            return (!output && word.indexOf(solid) === 0) ? word : output;
         }, '');
     }
 
@@ -72,7 +61,13 @@ export default class Autocomplete extends React.Component {
         this.recalc(solid);
     }
 
-    specialKey(key) {
+    completeAll() {
+        const {word} = this.state;
+
+        this.recalc(word);
+    }
+
+    onSpecialKey(key) {
 
         switch (key) {
             case keys.BACKSPACE:
@@ -82,28 +77,14 @@ export default class Autocomplete extends React.Component {
                 this.completeTillUppercase();
                 break;
             case keys.ENTER:
+                this.completeAll();
                 break;
             case keys.SPACE:
                 break;
             case keys.ESCAPE:
                 break;
-        }
-    }
-
-    onKeyDown(ev) {
-        const acceptedKey = isAlphaNumeric(ev.which),
-            specialKey = isSpecialKey(ev.which);
-
-        if (acceptedKey || specialKey) {
-            playSound(soundForKey(ev.which));
-        }
-
-        if (!acceptedKey) {
-            ev.preventDefault();
-        }
-
-        if (specialKey) {
-            this.specialKey(ev.which);
+            default:
+                break;
         }
     }
 
@@ -117,12 +98,7 @@ export default class Autocomplete extends React.Component {
             word,
         });
 
-        setEndOfContenteditable(this._input);
-    }
 
-    onChange() {
-        const solid = this._input.innerHTML;
-        this.recalc(solid);
     }
 
     onDeleteCharacter() {
@@ -137,15 +113,11 @@ export default class Autocomplete extends React.Component {
             <div onClick={this.focus}
                 style={styles.container} className="Autocomplete-container">
                 <div style={styles.pair}>
-                    <div ref={(c) => this._input = c}
-                         style={styles.solid}
-                         onKeyDown={this.onKeyDown}
-                         onInput={this.onChange}
-                         onBlur={this.onChange}
-                         contentEditable={true}
-                         spellCheck={false}
-                         suppressContentEditableWarning="true"
-                    >{solid}</div>
+                    <AutocompleteInput
+                        value={solid}
+                        onChange={this.recalc}
+                        onSpecialKey={this.onSpecialKey}
+                    />
                     <div style={styles.liquid}>{liquid}</div>
                 </div>
             </div>
@@ -169,15 +141,10 @@ const styles = {
         display: 'flex',
         flexDirection: 'row',
     },
-    solid: {
-        color: colors.colorMain,
-        outline: 'none',
-    },
     liquid: {
         color: colors.colorThird,
         fontWeight: 100,
         marginLeft: 0,
-    }
-
+    },
 }
 
