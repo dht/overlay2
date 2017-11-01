@@ -2,6 +2,8 @@ import React from 'react';
 import colors from "../../../../constants/colors";
 import keys from "../../../../constants/keys";
 import {isColor} from "../../../../utils/colors";
+import Log from "../../Log/Log";
+import * as config from "../../../../config/config";
 
 const Line = (props) => {
     let style = {...styles.description};
@@ -116,6 +118,8 @@ export default class OptionsList extends React.Component {
                         name={item.key}
                         description={item.description}/>)}
                 </ul>
+
+                {config.debugMode?<Log state={this.state} top={50} />: null}
             </div>
         );
     }
@@ -152,7 +156,7 @@ const styles = {
         color: colors.colorFour,
     },
     name: {
-        width: 120,
+        width: 140,
         whiteSpace: 'nowrap',
         overflow: 'hidden',
         textOverflow: 'ellipsis',
@@ -161,7 +165,7 @@ const styles = {
         color: colors.colorSecondary,
     },
     description: {
-        width: 150,
+        width: 140,
         whiteSpace: 'nowrap',
         overflow: 'hidden',
         textOverflow: 'ellipsis',

@@ -3,6 +3,8 @@ import commands, {commandsAsOptions} from "../../../constants/commands";
 import Autocomplete from "./Autocomplete";
 import {paramToOptions, paramToWords} from "../../../utils/parameters";
 import {addAction, setPreview} from "../../../api/actions_api";
+import Log from "../Log/Log";
+import * as config from "../../../config/config";
 
 const words = {
     CLEAR: 0,
@@ -31,22 +33,15 @@ export default class AutocompleteCommands extends React.Component {
 
         this.setWordForIndex = this.setWordForIndex.bind(this);
         this.clear = this.clear.bind(this);
-        this.run = this.run.bind(this);
 
         this.onChangeHighlightedOption = this.onChangeHighlightedOption.bind(this);
-    }
-
-    run(phrase) {
-        addAction({
-            phrase,
-        })
     }
 
     clear() {
         this.setWordForIndex(0);
     }
 
-    setParameters({command = this.state.command, words = [], allOptions = [], filterOptions = [], parameters = this.state.parameters, currentParameter = null, phrase=''}) {
+    setParameters({command = this.state.command, words = [], allOptions = [], filteredOptions = [], parameters = this.state.parameters, currentParameter = null, phrase=''}) {
 
         if (currentParameter > 0 && parameters) {
             const parameter = parameters[currentParameter - 1];
@@ -58,7 +53,7 @@ export default class AutocompleteCommands extends React.Component {
             command,
             words,
             allOptions,
-            filterOptions,
+            filteredOptions,
             parameters,
             phrase,
             commandLength: (parameters || []).length,
@@ -75,9 +70,7 @@ export default class AutocompleteCommands extends React.Component {
         }
 
         if (phrase && phrase.length >= 1) {
-            setPreview({
-                phrase: [...phrase, original]
-            })
+            this.props.onPreview(phrase, original);
         }
     }
 
@@ -113,7 +106,7 @@ export default class AutocompleteCommands extends React.Component {
                 });
 
                 if (!parameters || parameters.length === 0) {
-                    this.run(phrase);
+                    this.props.onRun(phrase);
                     this.clear();
                     return true;
                 }
@@ -122,7 +115,7 @@ export default class AutocompleteCommands extends React.Component {
 
             default:
                 if (index > commandLength) {
-                    this.run(phrase);
+                    this.props.onRun(phrase);
                     this.clear();
                     return true;
                 }
@@ -168,6 +161,7 @@ export default class AutocompleteCommands extends React.Component {
                     onType={this.onType}
                     onChangeHighlightedOption={this.onChangeHighlightedOption}
                 />
+                {config.debugMode?<Log state={this.state} top={220} />: null}
             </div>
         );
     }

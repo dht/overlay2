@@ -4,6 +4,8 @@ import AutocompletePair from "./AutocompletePair";
 import colors from "../../../constants/colors";
 import {CommandHelp} from "./inner/CommandHelp";
 import OptionsList from "./inner/OptionsList";
+import Log from "../Log/Log";
+import * as config from "../../../config/config";
 
 export default class Autocomplete extends React.Component {
 
@@ -108,6 +110,7 @@ export default class Autocomplete extends React.Component {
                 />
 
                 <CommandHelp value={commandHelp} phrase={phrase}/>
+                {config.debugMode?<Log state={this.state} top={120} />: null}
             </div>
         );
     }

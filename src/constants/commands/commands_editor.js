@@ -25,17 +25,36 @@ export default  {
             }
         ]
     },
-    addView: {
-        key: 'addView',
-        description:'add a view',
-    },
-    addViews: {
-        key: 'addViews',
-        structure: 'addViews numberOfViews',
-        description:'add several views',
+    addVerticalViews: {
+        key: 'addVerticalViews',
+        structure: 'addVerticalViews numberOfViews',
+        description:'add several rows',
         parameters: [
             {
                 numberOfViews: 'numeric'
+            }
+        ]
+    },
+    addHorizontalViews: {
+        key: 'addHorizontalViews',
+        structure: 'addHorizontalViews numberOfViews',
+        description:'add several columns',
+        parameters: [
+            {
+                numberOfViews: 'numeric'
+            }
+        ]
+    },
+    splitView: {
+        key: 'splitView',
+        structure: 'splitView size1 size2',
+        description:'split selected view',
+        parameters: [
+            {
+                size1: 'numeric'
+            },
+            {
+                size2: 'numeric'
             }
         ]
     },
