@@ -21,7 +21,7 @@ export default class AutocompleteCommands extends React.Component {
         this.state = {
             commandLength: 0,
             command: null,
-            words: Object.keys(commands),
+            words: Object.keys(commands).sort(),
             allOptions: commandsAsOptions,
             filteredOptions: [],
         }
@@ -67,12 +67,16 @@ export default class AutocompleteCommands extends React.Component {
         });
     }
 
-    onChangeHighlightedOption(option) {
+    onChangeHighlightedOption({original, triggerByArrow}) {
         const {phrase} = this.state;
+
+        if (!triggerByArrow) {
+            return;
+        }
 
         if (phrase && phrase.length >= 1) {
             setPreview({
-                phrase: [...phrase, option]
+                phrase: [...phrase, original]
             })
         }
     }
@@ -86,7 +90,7 @@ export default class AutocompleteCommands extends React.Component {
                 this.setParameters({
                     command: null,
                     commandLength: 0,
-                    words: Object.keys(commands),
+                    words: Object.keys(commands).sort(),
                     allOptions: commandsAsOptions,
                     filteredOptions: [],
                 });

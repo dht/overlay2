@@ -1,7 +1,15 @@
+import * as enums from "../enums";
+
 export default  {
     addText: {
         key: 'addText',
+        structure: 'addText text?',
         description:'add a text',
+        parameters: [
+            {
+                text: 'string'
+            }
+        ]
     },
     addPlaceholder: {
         key: 'addPlaceholder',
@@ -9,7 +17,13 @@ export default  {
     },
     addImage: {
         key: 'addImage',
+        structure: 'addImage imageUrl?',
         description:'add an image',
+        parameters: [
+            {
+                imageUrl: 'url'
+            }
+        ]
     },
     addView: {
         key: 'addView',
@@ -94,5 +108,51 @@ export default  {
     stepUp: {
         key: 'stepUp',
         description:'step up from selected',
+    },
+    createSnippet: {
+        key: 'createSnippet',
+        structure: 'createSnippet snippetName',
+        description:'create a new snippet',
+        parameters: [
+            {
+                snippetName: 'string'
+            }
+        ]
+    },
+    zoom: {
+        key: 'zoom',
+        structure: 'zoom value',
+        description:'zoom viewport',
+        parameters: [
+            {
+                value: enums.zoomEnum
+            }
+        ]
+    },
+    setVariable: {
+        key: 'setVariable',
+        structure: 'setVariable varName varType',
+        description:'set variable for selected',
+        parameters: [
+            {
+                varName: 'string'
+            },
+            {
+                value: enums.varTypeEnum
+            }
+        ]
+    },
+    setStyleVariable: {
+        key: 'setStyleVariable',
+        structure: 'setStyleVariable varName cssKey',
+        description:'set style-variable for selected',
+        parameters: [
+            {
+                varName: 'string'
+            },
+            {
+                cssKey: enums.cssKeysEnum
+            }
+        ]
     }
 }

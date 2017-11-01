@@ -2,7 +2,8 @@ import fonts from "../fonts";
 import * as enums from "../enums";
 import {colorsToParams} from "../../utils/parameters";
 import colorsEditor from "../colorsEditor";
-export default  {
+
+export default    {
     width: {
         key: 'width',
         structure: 'width size',
@@ -512,14 +513,14 @@ export default  {
     },
     fontWeight: {
         key: 'fontWeight',
-        structure: 'fontWeight weight param2',
+        structure: 'fontWeight weight',
         description: 'font-weight for selected',
         parameters: [
             {
                 weight: enums.fontWeightENum,
             },
-            {
-                param2: 'string',
-            }]
+          ]
     },
 }
+
+

@@ -27,9 +27,11 @@ export default class AutocompletePair extends React.Component {
         this.setState({
             solid: '',
             liquid: '',
+            word: '',
         });
 
         this.props.onChange('');
+        this.props.onClear();
     }
 
     findRelevantWord(solid) {

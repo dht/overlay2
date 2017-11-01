@@ -60,22 +60,21 @@ export default class OptionsList extends React.Component {
         document.removeEventListener('keydown', this.onKeyPress);
     }
 
-    setHighlighted(hightlightedIndex) {
+    setHighlighted(index, triggerByArrow) {
         const {items} = this.props;
 
-        let hightlightedWord = this.getCurrentWord(items, hightlightedIndex);
-
-        if (hightlightedIndex !== 0 || items.length > 1) {
-            this.props.onChangeHighlightedOption(hightlightedWord, hightlightedIndex);
-        }
-
-        if (hightlightedIndex === 0) {
-            hightlightedWord = '';
-        }
+        const original = this.getCurrentWord(items, index),
+            word = index === 0 && items.length === 1 ? '' : original;
 
         this.setState({
-            hightlightedIndex,
-            hightlightedWord,
+            hightlightedIndex: index,
+            hightlightedWord: word,
+        });
+
+        this.props.onChangeHighlightedOption({
+            word,
+            original,
+            triggerByArrow
         });
     }
 
@@ -85,7 +84,7 @@ export default class OptionsList extends React.Component {
         hightlightedIndex += delta;
         hightlightedIndex = (Math.min(Math.max(0, hightlightedIndex), items.length - 1));
 
-        this.setHighlighted(hightlightedIndex);
+        this.setHighlighted(hightlightedIndex, true);
     }
 
     onKeyPress(ev) {

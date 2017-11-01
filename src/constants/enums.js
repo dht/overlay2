@@ -9,7 +9,11 @@ export const fontWeightENum = arrayToEnum(['normal', 'bold', '100', '200', '300'
 
 export const fontStyleEnum = arrayToEnum(['normal', 'italic', 'oblique']);
 
-export const fontSizeEnum = arrayToEnum([8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]);
+export const fontSizeEnum = arrayToEnum(['08', '09', 10, 11,12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]);
+
+export const zoomEnum = arrayToEnum(['50%', '75%', '100%', '125%', '150%', '200%']);
+
+export const varTypeEnum = arrayToEnum(['string', 'imageUrl', 'overlay', 'html']);
 
 export const fontStretchEnum = arrayToEnum([
     'ultra-condensed',
@@ -98,3 +102,5 @@ export const backgroundSizeEnum = arrayToEnum(['contain', 'cover']);
 export const backgroundRepeatEnum = arrayToEnum(['no-repeat', 'repeat', 'repeat-x', 'repeat-y']);
 
 export const backgroundPositionEnum = arrayToEnum(['top', 'top left', 'top right', 'center', 'center left', 'center right', 'bottom', 'bottom left', 'bottom right']);
+
+export const cssKeysEnum = arrayToEnum(["width","height","backgroundColor","backgroundImage","backgroundSize","backgroundRepeat","backgroundPosition","fontStyle","textAlign","textTransform","lineHeight","flex","order","borderRadius","boxShadow","textShadow","border","color","paddingTop","paddingRight","paddingBottom","paddingLeft","marginTop","marginRight","marginBottom","marginLeft","borderTop","borderRight","borderBottom","borderLeft","padding","margin","flexDirection","flexWrap","justifyContent","alignItems","alignContent","alignSelf","letterSpacing","display","position","top","right","bottom","left","overflow","fontFamily","fontSize","fontWeight"]);

@@ -20,11 +20,18 @@ export default class Autocomplete extends React.Component {
         this.onChangeHighlightedOption = this.onChangeHighlightedOption.bind(this);
         this.focus = this.focus.bind(this);
         this.clear = this.clear.bind(this);
+        this.onClear = this.onClear.bind(this);
     }
 
     clear() {
         this.setState({
             phrase: [],
+            highlightedOption: ''
+        })
+    }
+
+    onClear() {
+        this.setState({
             highlightedOption: ''
         })
     }
@@ -63,18 +70,15 @@ export default class Autocomplete extends React.Component {
         this.props.onChange(phrase);
     }
 
-    onChangeHighlightedOption(option, index) {
+    onChangeHighlightedOption(info) {
+        const {word} = info;
         const {highlightedOption} = this.state;
 
-        this.props.onChangeHighlightedOption(option);
-
-        if (index === 0) {
-            option = '';
+        if (highlightedOption !== word) {
+            this.setState({highlightedOption: word})
         }
 
-        if (highlightedOption !== option) {
-            this.setState({highlightedOption: option})
-        }
+        this.props.onChangeHighlightedOption(info);
     }
 
     render() {
@@ -100,6 +104,7 @@ export default class Autocomplete extends React.Component {
                                   onChange={this.props.onType}
                                   onAddWord={this.onAddWord}
                                   onRemoveWord={this.onRemoveWord}
+                                  onClear={this.onClear}
                 />
 
                 <CommandHelp value={commandHelp} phrase={phrase}/>
