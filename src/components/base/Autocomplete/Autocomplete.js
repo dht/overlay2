@@ -63,8 +63,14 @@ export default class Autocomplete extends React.Component {
         this.props.onChange(phrase);
     }
 
-    onChangeHighlightedOption(option) {
+    onChangeHighlightedOption(option, index) {
         const {highlightedOption} = this.state;
+
+        this.props.onChangeHighlightedOption(option);
+
+        if (index === 0) {
+            option = '';
+        }
 
         if (highlightedOption !== option) {
             this.setState({highlightedOption: option})

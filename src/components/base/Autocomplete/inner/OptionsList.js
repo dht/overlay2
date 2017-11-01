@@ -65,6 +65,10 @@ export default class OptionsList extends React.Component {
 
         let hightlightedWord = this.getCurrentWord(items, hightlightedIndex);
 
+        if (hightlightedIndex !== 0 || items.length > 1) {
+            this.props.onChangeHighlightedOption(hightlightedWord, hightlightedIndex);
+        }
+
         if (hightlightedIndex === 0) {
             hightlightedWord = '';
         }
@@ -73,8 +77,6 @@ export default class OptionsList extends React.Component {
             hightlightedIndex,
             hightlightedWord,
         });
-
-        this.props.onChangeHighlightedOption(hightlightedWord);
     }
 
     nudgeHighlighted(delta) {

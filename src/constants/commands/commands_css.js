@@ -506,7 +506,7 @@ export default  {
         description: 'font-size for selected',
         parameters: [
             {
-                size: 'string'
+                size: enums.fontSizeEnum
             }
         ]
     },

@@ -9,6 +9,8 @@ export const fontWeightENum = arrayToEnum(['normal', 'bold', '100', '200', '300'
 
 export const fontStyleEnum = arrayToEnum(['normal', 'italic', 'oblique']);
 
+export const fontSizeEnum = arrayToEnum([8, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50]);
+
 export const fontStretchEnum = arrayToEnum([
     'ultra-condensed',
     'extra-condensed',

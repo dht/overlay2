@@ -2,6 +2,7 @@ import React from 'react';
 import commands, {commandsAsOptions} from "../../../constants/commands";
 import Autocomplete from "./Autocomplete";
 import {paramToOptions, paramToWords} from "../../../utils/parameters";
+import {addAction, setPreview} from "../../../api/actions_api";
 
 const words = {
     CLEAR: 0,
@@ -30,13 +31,22 @@ export default class AutocompleteCommands extends React.Component {
 
         this.setWordForIndex = this.setWordForIndex.bind(this);
         this.clear = this.clear.bind(this);
+        this.run = this.run.bind(this);
+
+        this.onChangeHighlightedOption = this.onChangeHighlightedOption.bind(this);
+    }
+
+    run(phrase) {
+        addAction({
+            phrase,
+        })
     }
 
     clear() {
         this.setWordForIndex(0);
     }
 
-    setParameters({command = this.state.command, words = [], allOptions = [], filterOptions = [], parameters = this.state.parameters, currentParameter = null}) {
+    setParameters({command = this.state.command, words = [], allOptions = [], filterOptions = [], parameters = this.state.parameters, currentParameter = null, phrase=''}) {
 
         if (currentParameter > 0 && parameters) {
             const parameter = parameters[currentParameter - 1];
@@ -50,13 +60,24 @@ export default class AutocompleteCommands extends React.Component {
             allOptions,
             filterOptions,
             parameters,
+            phrase,
             commandLength: (parameters || []).length,
         }, () => {
             this.onType('');
         });
     }
 
-    setWordForIndex(index, word) {
+    onChangeHighlightedOption(option) {
+        const {phrase} = this.state;
+
+        if (phrase && phrase.length >= 1) {
+            setPreview({
+                phrase: [...phrase, option]
+            })
+        }
+    }
+
+    setWordForIndex(index, word, phrase) {
         const {commandLength} = this.state;
         const currentParameter = index;
 
@@ -81,12 +102,14 @@ export default class AutocompleteCommands extends React.Component {
                 }
 
                 this.setParameters({
+                    phrase,
                     command,
                     parameters,
                     currentParameter,
                 });
 
                 if (!parameters || parameters.length === 0) {
+                    this.run(phrase);
                     this.clear();
                     return true;
                 }
@@ -95,11 +118,13 @@ export default class AutocompleteCommands extends React.Component {
 
             default:
                 if (index > commandLength) {
+                    this.run(phrase);
                     this.clear();
                     return true;
                 }
 
                 this.setParameters({
+                    phrase,
                     currentParameter,
                 });
 
@@ -113,7 +138,7 @@ export default class AutocompleteCommands extends React.Component {
         const len = phrase.length,
             word = phrase[len - 1];
 
-        return this.setWordForIndex(len, word);
+        return this.setWordForIndex(len, word, phrase);
     }
 
     onType(value) {
@@ -137,6 +162,7 @@ export default class AutocompleteCommands extends React.Component {
                     optionsList={filteredOptions}
                     onChange={this.onChange}
                     onType={this.onType}
+                    onChangeHighlightedOption={this.onChangeHighlightedOption}
                 />
             </div>
         );
