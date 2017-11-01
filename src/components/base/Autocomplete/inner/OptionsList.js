@@ -1,12 +1,21 @@
 import React from 'react';
 import colors from "../../../../constants/colors";
 import keys from "../../../../constants/keys";
+import {isColor} from "../../../../utils/colors";
 
+const Line = (props) => {
+    let style = {...styles.description};
 
-const Line = (props) => <li onMouseOver={props.onMouseOver} style={{...styles.li, ...props.highlighted ? styles.liHighlighted : {}}}>
-    <div style={{...styles.name, ...props.highlighted ? styles.nameHighlighted : {}}}>{props.name}</div>
-    <div style={styles.description}>{props.description}</div>
-</li>
+    if (isColor(props.name)) {
+        style['backgroundColor'] = props.name;
+        style['height'] = 20;
+    }
+
+    return <li onMouseOver={props.onMouseOver} style={{...styles.li, ...props.highlighted ? styles.liHighlighted : {}}}>
+        <div style={{...styles.name, ...props.highlighted ? styles.nameHighlighted : {}}}>{props.name}</div>
+        <div style={style}>{props.description}</div>
+    </li>
+}
 
 export default class OptionsList extends React.Component {
 
@@ -36,9 +45,9 @@ export default class OptionsList extends React.Component {
 
     componentWillReceiveProps(newProps) {
         const {hightlightedWord, hightlightedIndex} = this.state;
-        const newHightlightedWord =this.getCurrentWord(newProps.items, hightlightedIndex);
+        const newHightlightedWord = this.getCurrentWord(newProps.items, hightlightedIndex);
 
-        if (hightlightedWord!== newHightlightedWord) {
+        if (hightlightedWord !== newHightlightedWord) {
             this.reset();
         }
     }
@@ -54,7 +63,7 @@ export default class OptionsList extends React.Component {
     setHighlighted(hightlightedIndex) {
         const {items} = this.props;
 
-        let hightlightedWord =this.getCurrentWord(items, hightlightedIndex);
+        let hightlightedWord = this.getCurrentWord(items, hightlightedIndex);
 
         if (hightlightedIndex === 0) {
             hightlightedWord = '';
@@ -126,8 +135,8 @@ const styles = {
         listStyleType: 'none',
         padding: 0,
         margin: 0,
-        maxHeight:265,
-        overflow:'auto',
+        maxHeight: 265,
+        overflow: 'auto',
     },
     li: {
         padding: '2px 3px',
