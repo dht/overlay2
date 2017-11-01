@@ -1,9 +1,9 @@
 import React from 'react';
 import './Autocomplete.css';
+import AutocompletePair from "./AutocompletePair";
 import colors from "../../../constants/colors";
-import keys from "../../../constants/keys";
-// import AutocompleteInput from "./AutocompleteEditable";
-import AutocompleteInput from "./AutocompleteInput";
+import {CommandHelp} from "./inner/CommandHelp";
+import OptionsList from "./inner/OptionsList";
 
 export default class Autocomplete extends React.Component {
 
@@ -11,115 +11,92 @@ export default class Autocomplete extends React.Component {
         super(props);
 
         this.state = {
-            minimumCharactersToCalc:1,
-            mustFit: true,
-            solid: '',
-            liquid: '',
-            words: ['addView', 'addViews','fontSize', 'fontWeight', 'bigFreakingNumberIsHere','pixel', 'pixem', 'findAll', 'findOne']
+            phrase: [],
+            highlightedOption: ''
         }
 
-        this.findRelevantWord = this.findRelevantWord.bind(this);
-        this.onSpecialKey = this.onSpecialKey.bind(this);
-        this.recalc = this.recalc.bind(this);
+        this.onAddWord = this.onAddWord.bind(this);
+        this.onRemoveWord = this.onRemoveWord.bind(this);
+        this.onChangeHighlightedOption = this.onChangeHighlightedOption.bind(this);
+        this.focus = this.focus.bind(this);
+        this.clear = this.clear.bind(this);
     }
 
-    componentWillReceiveProps(newProps) {
-    }
-
-    findRelevantWord(solid) {
-        const {words} = this.state;
-
-        return words.reduce((output, word) => {
-            return (!output && word.indexOf(solid) === 0) ? word : output;
-        }, '');
-    }
-
-    wordMinusSolid(solid, word) {
-        const {minimumCharactersToCalc} = this.state;
-
-        if (solid.length < minimumCharactersToCalc) {
-            return '';
-        }
-
-        return word.substr(solid.length);
-    }
-
-    completeTillUppercase() {
-        let {solid, liquid} = this.state,
-            nextUppercaseIndex = liquid.search(/[A-Z]/);
-
-        if (nextUppercaseIndex === 0) {
-            nextUppercaseIndex = liquid.substr(1).search(/[A-Z]/) + 1;
-        }
-
-        if (nextUppercaseIndex > 0) {
-            solid += liquid.substr(0, nextUppercaseIndex);
-        } else if (liquid.length) {
-            solid += liquid;
-        }
-
-        this.recalc(solid);
-    }
-
-    completeAll() {
-        const {word} = this.state;
-
-        this.recalc(word);
-    }
-
-    onSpecialKey(key) {
-
-        switch (key) {
-            case keys.BACKSPACE:
-                this.onDeleteCharacter();
-                break;
-            case keys.TAB:
-                this.completeTillUppercase();
-                break;
-            case keys.ENTER:
-                this.completeAll();
-                break;
-            case keys.SPACE:
-                break;
-            case keys.ESCAPE:
-                break;
-            default:
-                break;
-        }
-    }
-
-    recalc(solid) {
-        const word = this.findRelevantWord(solid),
-            liquid = this.wordMinusSolid(solid, word);
-
+    clear() {
         this.setState({
-            solid,
-            liquid,
-            word,
-        });
-
-
+            phrase: [],
+            highlightedOption: ''
+        })
     }
 
-    onDeleteCharacter() {
-        let {solid} = this.state;
-        this.recalc(solid.substr(0, solid.length - 1));
+    focus() {
+        document.getElementById('__autocomplete_theInput').focus();
+    }
+
+    onAddWord(word) {
+        const {phrase, highlightedOption} = this.state;
+
+        if (highlightedOption) {
+            word = highlightedOption;
+        }
+
+        phrase.push(word);
+        this.setState({phrase});
+
+        const clear = this.props.onChange(phrase);
+
+        if (clear) {
+            this.clear();
+        }
+    }
+
+    onRemoveWord() {
+        const {phrase} = this.state;
+
+        phrase.pop();
+
+        if (phrase.length === 0) {
+            this.setState({command: null})
+        }
+
+        this.setState({phrase});
+        this.props.onChange(phrase);
+    }
+
+    onChangeHighlightedOption(option) {
+        const {highlightedOption} = this.state;
+
+        if (highlightedOption !== option) {
+            this.setState({highlightedOption: option})
+        }
     }
 
     render() {
-        const {solid, liquid} = this.state;
+        const {words, optionsList, commandHelp} = this.props;
+
+        const {phrase} = this.state;
 
         return (
             <div onClick={this.focus}
-                style={styles.container} className="Autocomplete-container">
-                <div style={styles.pair}>
-                    <AutocompleteInput
-                        value={solid}
-                        onChange={this.recalc}
-                        onSpecialKey={this.onSpecialKey}
-                    />
-                    <div style={styles.liquid}>{liquid}</div>
-                </div>
+                 style={styles.container} className="Autocomplete-container">
+                {
+                    phrase.map((word, index) => <div key={index} style={styles.word}>
+                        {word}
+                    </div>)
+                }
+
+                <OptionsList
+                    items={optionsList}
+                    onChangeHighlightedOption={this.onChangeHighlightedOption}
+                />
+
+                <AutocompletePair words={words}
+                                  onChange={this.props.onType}
+                                  onAddWord={this.onAddWord}
+                                  onRemoveWord={this.onRemoveWord}
+                />
+
+                <CommandHelp value={commandHelp} phrase={phrase}/>
             </div>
         );
     }
@@ -135,16 +112,11 @@ const styles = {
         justifyContent: 'flex-start',
         display: 'flex',
         flexDirection: 'row',
+        paddingLeft: 10,
     },
-    pair: {
-        marginLeft: 10,
-        display: 'flex',
-        flexDirection: 'row',
-    },
-    liquid: {
-        color: colors.colorThird,
-        fontWeight: 100,
-        marginLeft: 0,
+    word: {
+        marginRight: 8,
+        color: colors.colorMain,
     },
 }
 

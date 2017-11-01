@@ -3,7 +3,6 @@ import {isAlphaNumeric, isSpecialKey} from "../../../utils/keys";
 import {soundForKey} from "../../../constants/sounds";
 import {playSound} from "../../../utils/sound";
 import colors from "../../../constants/colors";
-import {setEndOfContenteditable} from "../../../utils/cursor";
 import keys from "../../../constants/keys";
 
 export default class AutocompleteInput extends React.Component {
@@ -24,7 +23,7 @@ export default class AutocompleteInput extends React.Component {
 
     setValue(value) {
         this._span.innerHTML = value;
-        const width = this._span.getBoundingClientRect().width;
+        const width = Math.ceil(1 + Math.max(this._span.getBoundingClientRect().width, 5));
 
         this.setState({
             width,
@@ -65,9 +64,12 @@ export default class AutocompleteInput extends React.Component {
             playSound(soundForKey(ev.which));
         }
 
-        if (specialKey && ev.which !== keys.BACKSPACE) {
-            ev.preventDefault();
+        if (specialKey) {
             this.props.onSpecialKey(ev.which);
+        }
+
+        if (ev.which === keys.TAB) {
+            ev.preventDefault();
         }
     }
 
@@ -82,6 +84,7 @@ export default class AutocompleteInput extends React.Component {
         return (
             <div>
            <input
+               id="__autocomplete_theInput"
                ref={(c) => this._input = c}
                style={this.style()}
                onKeyDown={this.onKeyDown}

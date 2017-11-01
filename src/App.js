@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './App.css';
-import Autocomplete from "./components/base/Autocomplete/Autocomplete";
+import Autocomplete from "./components/base/Autocomplete/AutocompleteCommands";
 
 class App extends Component {
 

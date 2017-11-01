@@ -4,4 +4,6 @@ export default {
     ENTER: 13,
     SPACE: 32,
     ESCAPE: 27,
+    DOWN: 38,
+    UP: 40,
 }
