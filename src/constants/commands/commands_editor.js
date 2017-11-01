@@ -58,6 +58,43 @@ export default  {
             }
         ]
     },
+    setCanvasDimensions: {
+        key: 'setCanvasDimensions',
+        structure: 'setCanvasDimensions width height',
+        description:'set canvas width and height',
+        parameters: [
+            {
+                width: 'numeric'
+            },
+            {
+                height: 'numeric'
+            }
+        ]
+    },
+    overlayUrl: {
+        key: 'overlayUrl',
+        structure: 'overlayUrl url',
+        description:'sets the canvas overlay',
+        parameters: [
+            {
+                url: 'url'
+            },
+        ]
+    },
+    overlayOpacity: {
+        key: 'overlayOpacity',
+        structure: 'overlayOpacity opacity',
+        description:'sets the overlay\'s opacity',
+        parameters: [
+            {
+                opacity: enums.overlayOpacityEnum
+            },
+        ]
+    },
+    toggleOverlay: {
+        key: 'toggleOverlay',
+        description:'toggles the overlay',
+    },
     setSelected: {
         key: 'setSelected',
         structure: 'setSelected id',
