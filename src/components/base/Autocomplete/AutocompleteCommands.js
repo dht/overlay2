@@ -1,7 +1,7 @@
 import React from 'react';
 import commands, {commandsAsOptions} from "../../../constants/commands";
 import Autocomplete from "./Autocomplete";
-import {paramToOptions, paramToWords} from "../../../constants/parameters";
+import {paramToOptions, paramToWords} from "../../../utils/parameters";
 
 const words = {
     CLEAR: 0,
@@ -38,7 +38,7 @@ export default class AutocompleteCommands extends React.Component {
 
     setParameters({command = this.state.command, words = [], allOptions = [], filterOptions = [], parameters = this.state.parameters, currentParameter = null}) {
 
-        if (currentParameter > 0) {
+        if (currentParameter > 0 && parameters) {
             const parameter = parameters[currentParameter - 1];
             words = paramToWords(parameter);
             allOptions = paramToOptions(parameter);

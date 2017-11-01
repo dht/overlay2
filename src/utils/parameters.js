@@ -10,7 +10,10 @@ export const enumToOptions = (enumObject) => {
     return Object.keys(enumObject).map(key => ({
         key,
         description: ''
-    }));
+    })).sort(function (a, b) {
+        if (a.key === b.key) return 0;
+        return a.key > b.key ? 1 : -1;
+    })
 }
 
 export const paramToOptions = (parameter) => {
@@ -25,6 +28,7 @@ export const paramToOptions = (parameter) => {
         case 'value':
         case 'color':
         case 'string':
+        case 'url':
             return [];
 
         default:
@@ -44,9 +48,17 @@ export const paramToWords = (parameter) => {
         case 'value':
         case 'color':
         case 'string':
+        case 'url':
             return [];
 
         default:
             return enumToWords(paramType);
     }
+}
+
+export const colorsToParams = (colors) => {
+   return Object.keys(colors).reduce((output, key) => {
+       output[colors[key]] = colors[key];
+       return output;
+   }, {})
 }

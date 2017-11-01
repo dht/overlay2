@@ -1,5 +1,7 @@
 import fonts from "../fonts";
 import * as enums from "../enums";
+import {colorsToParams} from "../../utils/parameters";
+import colorsEditor from "../colorsEditor";
 export default  {
     width: {
         key: 'width',
@@ -27,7 +29,7 @@ export default  {
         description: 'backgroundColor for selected',
         parameters: [
             {
-                color: 'color'
+                color: colorsToParams(colorsEditor)
             }
         ]
     },
@@ -159,7 +161,7 @@ export default  {
                 spreadRadius: 'size'
             },
             {
-                color: 'color'
+                color: colorsToParams(colorsEditor)
             }
         ]
     },
@@ -178,7 +180,7 @@ export default  {
                 blurRadius: 'size'
             },
             {
-                color: 'color'
+                color: colorsToParams(colorsEditor)
             }
         ]
     },
@@ -194,7 +196,7 @@ export default  {
                 borderType: 'borderType'
             },
             {
-                borderColor: 'color'
+                borderColor: colorsToParams(colorsEditor)
             }
         ]
     },
@@ -204,7 +206,7 @@ export default  {
         description: 'font-color for selected',
         parameters: [
             {
-                fontColor: 'color'
+                fontColor: colorsToParams(colorsEditor)
             }
         ]
     },
