@@ -1,0 +1,7 @@
+{
+"version": 3,
+"mappings": "AAEA,IAAK;EACH,gBAAgB,ECHN,OAAO",
+"sources": ["App.scss","constants/colors.scss"],
+"names": [],
+"file": "App.css"
+}
